@@ -3,6 +3,7 @@
 --- Created by lenovo.
 --- DateTime: 2018/3/29 14:48
 ---
+local _M ={}
 function random(n,m)
     --思路是用随机结构放大处理以后再置随机种子，然后随机
     math.randomseed(os.clock()*math.random(1000000,90000000)+math.random(1000000,9000000)+tonumber(tostring(os.time()):reverse():sub(1, 6))+os.time())
@@ -49,7 +50,7 @@ RDModle ={
     RSM_Let_Num = 6 , --小写字母+数字
     RSM_All = 7  --全部
 }
-function RandomString(len,modl) --产生一组指定长度的随机文本模式
+function _M.RandomString(len,modl) --产生一组指定长度的随机文本模式
     local BC = "ABCDEFGHJKLMNPQRSTUVWXYZ" --1
     local SC = "abcdefghijklmnopqrstuvwxyz"--2
     local NO = "23456789"--4
@@ -89,9 +90,12 @@ function RandomString(len,modl) --产生一组指定长度的随机文本模式
     end
     return table.concat(srt,"")
 end
-for i = 1, 10 do
-    print(RandomString(14,5))
-end
+--[[for i = 1, 10 do
+    print(_M.RandomString(14,5))
+end]]
+--[[local test;
+test = RandomString(14,5)
 
+print(test)]]
 
-local test;
+return _M
