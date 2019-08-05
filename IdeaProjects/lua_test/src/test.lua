@@ -232,6 +232,7 @@ local time2 = "2018-05-14 12:31:50"
 --local table = {1,2}
 --print(table)
 
+--测试字符串拆分
 function split( str, reps )
     local resultStrList = {}
     string.gsub(str,'[^'..reps..']+',function ( w )
@@ -272,6 +273,7 @@ table1 = split1(aa,',')
 --    print(table1[k])
 --end
 
+--测试字符串比较存在相同字符
 local bbb = string.find(aa,"A")
 
 if bbb then
@@ -305,9 +307,8 @@ function findKey1 (map,key)
     return is_exist
 end
 
+--测试lua实现map
 local mapA = Map();
-
-
 mapA:set("name","yu1")
 mapA:set("name2","yu2")
 local aaa = "name3";
@@ -318,7 +319,6 @@ print(mapA[aaa])
 --print(mapA.name)
 print("***********")
 mapA:print();
-
 
 --local table_view = {
 --    "w",
@@ -340,12 +340,7 @@ mapA:print();
 --    end
 --end
 
-
-
-
-
-
-
+---测试判断字符串长度
 local text = "1234QAWF深入骨髓"
 local fieldLength = 12
 local _,count1 = string.gsub(text, "[^\128-\193]","");
@@ -356,6 +351,92 @@ else
     print("字符串长度："..count1)
 end
 
+---测试list添加table
+local pids = {}
+local proTable = {person_id="123123",identity_id="1",bureau_id="900000"}
+table.insert(pids,proTable);
+print("@#######  "..type(pids))
+print("@#######  "..#pids)
+print("测试截字符串！！！！！！")
+local ceSub = "-11-";
+local ceSubb = string.gsub(ceSub,"-", "");
+print(ceSubb)
+
+print("@@@@@@@#######  ")
+print(os.date("%m")+3)
+local dqsj = os.date("%d",os.time({year=os.date("%Y"),month=os.date("%m")+4,day=0}))
+print("dqsj::: "..dqsj)
 
 
---asdasd 增加注释
+local structure_ids = "123_234_456_678"
+local struStr = string.gsub(structure_ids,"_",",")
+print(struStr);
+
+
+function timediff(long_time,short_time)
+    local n_short_time,n_long_time,carry,diff = os.date('*t',short_time),os.date('*t',long_time),false,{}
+    local colMax = {60,60,24,os.date('*t',os.time{year=n_short_time.year,month=n_short_time.month+1,day=0}).day,12,0}
+    n_long_time.hour = n_long_time.hour - (n_long_time.isdst and 1 or 0) + (n_short_time.isdst and 1 or 0) -- handle dst
+    for i,v in ipairs({'sec','min','hour','day','month','year'}) do
+        diff[v] = n_long_time[v] - n_short_time[v] + (carry and -1 or 0)
+        carry = diff[v] < 0
+        if carry then
+            diff[v] = diff[v] + colMax[i]
+        end
+    end
+    return diff
+end
+
+
+--local n_long_time = os.date(os.time{year=2019,month=7,day=12,hour=16,min=0,sec=0});
+local n_long_time = os.date(os.time{year=2019,month=7,day=12,hour=16,min=0,sec=0});
+local n_short_time = os.date(os.time{year=2019,month=6,day=11,hour=15,min=0,sec=0});
+
+
+
+local t_time = timediff(n_long_time,n_short_time);
+print(t_time.year);
+print(t_time.month);
+print(t_time.day);
+
+local time_txt = string.format("%04d", t_time.year).."年"..string.format("%02d", t_time.month).."月"..string.format("%02d", t_time.day).."日   "..string.format("%02d", t_time.hour)..":"..string.format("%02d", t_time.min)..":"..string.format("%02d", t_time.sec);
+print(time_txt);
+
+
+local function compareStr(Str1,Str2)
+    local Str = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","√","×","正确","错误","对","错","0","1","2","3","4","5","6","7","8","9"}
+
+    local right_answer_order = ""
+    local stu_answer_order = ""
+
+    for i=1,#Str,1 do
+        local p = Str[i]
+
+        local q  = string.find(string.upper(Str1), p)
+
+        if q  then
+            if i == 27 or i == 29 or i == 31 then
+                right_answer_order = "√"
+            elseif i == 28 or i == 30 or i == 32 then
+                right_answer_order = "×"
+            else
+                right_answer_order = right_answer_order..p;
+            end
+        end
+        local q  = string.find(string.upper(Str2), p)
+        if q  then
+            if i == 27 or i == 29 or i == 31 then
+                stu_answer_order = "√"
+            elseif i == 28 or i == 30 or i == 32 then
+                stu_answer_order = "×"
+            else
+                stu_answer_order = stu_answer_order..p;
+            end
+        end
+    end
+    print("right_answer_order:"..right_answer_order.."  stu_answer_order:"..stu_answer_order)
+    return right_answer_order==stu_answer_order
+end
+local str2 = nil or "";
+local shishi = compareStr("0,",str2)
+print(shishi)
